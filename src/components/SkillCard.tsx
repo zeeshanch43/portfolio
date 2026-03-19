@@ -14,13 +14,18 @@ interface SkillCardProps {
 }
 
 const SkillCard = ({ skill }: SkillCardProps) => {
+  const iconSrc = skill.icon.trim().startsWith("<svg")
+    ? `data:image/svg+xml;utf8,${encodeURIComponent(skill.icon)}`
+    : skill.icon;
+
   const isImageIcon =
-    skill.icon.includes(".png") ||
-    skill.icon.includes(".jpg") ||
-    skill.icon.includes(".jpeg") ||
-    skill.icon.includes(".svg") ||
-    skill.icon.startsWith("/") ||
-    skill.icon.startsWith("http");
+    iconSrc.includes(".png") ||
+    iconSrc.includes(".jpg") ||
+    iconSrc.includes(".jpeg") ||
+    iconSrc.includes(".svg") ||
+    iconSrc.startsWith("/") ||
+    iconSrc.startsWith("http") ||
+    iconSrc.startsWith("data:image/");
   const isFastApi = skill.name.toLowerCase() === "fastapi";
 
   return (
@@ -33,7 +38,7 @@ const SkillCard = ({ skill }: SkillCardProps) => {
         {isImageIcon ? (
           <div className="w-full h-full p-2 flex items-center justify-center bg-white">
             <img
-              src={skill.icon}
+              src={iconSrc}
               alt={skill.name}
               className={cn(
                 "w-full h-full object-contain",
